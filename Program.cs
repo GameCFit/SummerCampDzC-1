@@ -33,7 +33,7 @@ namespace DZ1
                 damageDefensiveUnit = attackingUnit.BaseDamage * 2 * (1f - (defensiveUnit.BaseArmor / 100));
             }
 
-            if (defensiveUnit.UnitFraction != Unit.Fraction.Neutral)
+            if (defensiveUnit.UnitFraction != Unit.Fraction.Neutral && attackingUnit.UnitFraction != Unit.Fraction.Neutral)
             {
                 if (defensiveUnit.UnitFraction == attackingUnit.UnitFraction)
                     damageDefensiveUnit *= 0.5f;
