@@ -6,8 +6,8 @@ namespace DZ1
     {
         public static void Main()
         {
-            Unit defensiveUnit = new(25, 10, Unit.Fraction.Good, false);
-            Unit attackingUnit = new(25, 10, Unit.Fraction.Good, false);
+            Unit defensiveUnit = new(25, 10, Unit.Fraction.Good, true);
+            Unit attackingUnit = new(25, 10, Unit.Fraction.Good, true);
 
             Console.WriteLine($"Защищающийся юнит получит {GetDamageDefensiveUnit(defensiveUnit, attackingUnit)}");
         }
@@ -23,10 +23,7 @@ namespace DZ1
             damageDefensiveUnit = damage * (1f - (armor / 100));
 
             if (defensiveUnit.UnitFraction != Unit.Fraction.Neutral && attackingUnit.UnitFraction != Unit.Fraction.Neutral)
-                if (defensiveUnit.UnitFraction == attackingUnit.UnitFraction)
-                    damageDefensiveUnit *= 0.5f;
-                else if (defensiveUnit.UnitFraction != attackingUnit.UnitFraction)
-                    damageDefensiveUnit += damageDefensiveUnit / 2;
+                damageDefensiveUnit = defensiveUnit.UnitFraction == attackingUnit.UnitFraction ? damageDefensiveUnit *= 0.5f : damageDefensiveUnit += damageDefensiveUnit / 2;
 
             return damageDefensiveUnit;
         }
