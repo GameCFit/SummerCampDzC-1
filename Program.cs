@@ -22,13 +22,12 @@ namespace DZ1
 
             damageDefensiveUnit = damage * (1f - (armor / 100));
 
-            if (defensiveUnit.UnitFraction != Unit.Fraction.Neutral)
-            {
+            if (defensiveUnit.UnitFraction != Unit.Fraction.Neutral && attackingUnit.UnitFraction != Unit.Fraction.Neutral)
                 if (defensiveUnit.UnitFraction == attackingUnit.UnitFraction)
                     damageDefensiveUnit *= 0.5f;
                 else if (defensiveUnit.UnitFraction != attackingUnit.UnitFraction)
                     damageDefensiveUnit += damageDefensiveUnit / 2;
-            }
+
             return damageDefensiveUnit;
         }
     }
