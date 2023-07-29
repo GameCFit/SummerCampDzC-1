@@ -6,8 +6,8 @@ namespace DZ1
     {
         public static void Main()
         {
-            Unit defensiveUnit = new(25, 10, Unit.Fraction.Good, true);
-            Unit attackingUnit = new(25, 10, Unit.Fraction.Good, true);
+            Unit defensiveUnit = new(25, 10, Unit.Fraction.Good, false);
+            Unit attackingUnit = new(25, 10, Unit.Fraction.Good, false);
 
             Console.WriteLine($"Защищающийся юнит получит {GetDamageDefensiveUnit(defensiveUnit, attackingUnit)}");
         }
@@ -16,24 +16,13 @@ namespace DZ1
         {
             float damageDefensiveUnit = 0;
 
-            if (defensiveUnit.BerserkState == false && attackingUnit.BerserkState == false)
-            {
-                damageDefensiveUnit = attackingUnit.BaseDamage * (1f - (defensiveUnit.BaseArmor / 100));
-            }
-            else if (defensiveUnit.BerserkState == true && attackingUnit.BerserkState == false)
-            {
-                damageDefensiveUnit = attackingUnit.BaseDamage * (1f - (defensiveUnit.BaseArmor * 0.2f / 100));
-            }
-            else if (defensiveUnit.BerserkState == true && attackingUnit.BerserkState == true)
-            {
-                damageDefensiveUnit = attackingUnit.BaseDamage * 2 * (1f - (defensiveUnit.BaseArmor * 0.2f / 100));
-            }
-            else
-            {
-                damageDefensiveUnit = attackingUnit.BaseDamage * 2 * (1f - (defensiveUnit.BaseArmor / 100));
-            }
+            float armor = defensiveUnit.BerserkState ? defensiveUnit.BaseArmor * 0.2f : defensiveUnit.BaseArmor;
 
-            if (defensiveUnit.UnitFraction != Unit.Fraction.Neutral && attackingUnit.UnitFraction != Unit.Fraction.Neutral)
+            float damage = attackingUnit.BerserkState ? attackingUnit.BaseDamage * 2 : attackingUnit.BaseDamage;
+
+            damageDefensiveUnit = damage * (1f - (armor / 100));
+
+            if (defensiveUnit.UnitFraction != Unit.Fraction.Neutral)
             {
                 if (defensiveUnit.UnitFraction == attackingUnit.UnitFraction)
                     damageDefensiveUnit *= 0.5f;
@@ -46,19 +35,12 @@ namespace DZ1
 
     class Unit
     {
-        public int BaseDamage => _baseDamage;
-        public int BaseArmor => _baseArmor;
+        public int BaseDamage { get; private set; }
+        public int BaseArmor { get; private set; }
 
-        public Fraction UnitFraction => _unitFraction;
+        public Fraction UnitFraction { get; private set; }
 
-        public bool BerserkState => _berserkState;
-
-        private int _baseDamage;
-        private int _baseArmor;
-
-        private Fraction _unitFraction;
-
-        private bool _berserkState;
+        public bool BerserkState { get; private set; }
 
         public enum Fraction
         {
@@ -69,10 +51,10 @@ namespace DZ1
 
         public Unit(int baseDamage, int baseArmor, Fraction unitFraction, bool berserkState)
         {
-            _baseDamage = baseDamage;
-            _baseArmor = baseArmor;
-            _unitFraction = unitFraction;
-            _berserkState = berserkState;
+            BaseDamage = baseDamage;
+            BaseArmor = baseArmor;
+            UnitFraction = unitFraction;
+            BerserkState = berserkState;
         }
     }
 }
